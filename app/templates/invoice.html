@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <h1>Редактирование формы {{ invoice.name }}</h1>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <p>
             {{ form.name.label }}<br>
@@ -10,11 +10,79 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
+        <p>
+            {{ form.text.label }}<br>
+            {{ form.text(size=32) }}<br>
+            {% for error in form.text.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.full_text.label }}<br>
+            {{ form.full_text(size=32) }}<br>
+            {% for error in form.full_text.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {% if image %}
+                <img src="{{ image.path }}" style="max-width: 100px">
+                {{ form.delete_picture.label }}
+                {{ form.delete_picture(size=32) }}
+            {% endif %}
+        </p>
+        <p>
+            {{ form.picture.label }}<br>
+            {{ form.picture(size=32) }}<br>
+            {% for error in form.picture.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.send_text.label }}<br>
+            {{ form.send_text(size=32) }}<br>
+            {% for error in form.full_text.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.send_full_text.label }}<br>
+            {{ form.send_full_text(size=32) }}<br>
+            {% for error in form.send_full_text.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.departure_date.label }}<br>
+            {% if form.departure_date.data == 'None' %}
+                <input name="departure_date" class="datetimepicker" size="32">
+            {% else %}
+                {{ form.departure_date(size=32, class_="datetimepicker")}}<br>
+            {% endif %}
+            {% for error in form.departure_date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.receive_date.label }}<br>
+            {% if form.receive_date.data == 'None' %}
+                <input name="receive_date" class="datetimepicker" size="32">
+            {% else %}
+                {{ form.receive_date(size=32, class_="datetimepicker")}}<br>
+            {% endif %}
+            {% for error in form.receive_date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
         <p>{{ form.submit() }}</p>
         <button id="get_word" data-id="{{ invoice.id }}"> Экспорт документа в WORD</button>
     </form>
     <script>
     $(function () {
+        $( ".datetimepicker" ).datetimepicker({
+            format: 'Y-m-d H:i:s',
+        });
         $("#get_word").on("click", function(e) {
             e.preventDefault();
             id_invoice = $(this).data('id');

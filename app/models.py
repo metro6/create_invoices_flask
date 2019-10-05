@@ -29,6 +29,8 @@ class Invoice(db.Model):
     name = db.Column(db.String(128))
     text = db.Column(db.String(5000), nullable=True)
     full_text = db.Column(db.String(5000), nullable=True)
+    departure_date = db.Column(db.DateTime, nullable=True)
+    receive_date = db.Column(db.DateTime, nullable=True)
 
     def __repr__(self):
         return '<Invoice {}>'.format(self.body)

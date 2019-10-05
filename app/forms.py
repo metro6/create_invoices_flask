@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FileField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
+
 
 from app.models import User
 
@@ -31,4 +32,13 @@ class CreateFormForm(FlaskForm):
 
 class EditFormForm(FlaskForm):
     name = StringField('Название формы', validators=[DataRequired()])
+    text = TextAreaField('Краткий текст')
+    full_text = TextAreaField('Полный текст')
+    picture = FileField('Картинка')
+    delete_picture = BooleanField('Удалить картинку')
+    send_text = BooleanField('Отправить краткий текст')
+    send_full_text = BooleanField('Отправить полный текст')
+    departure_date = StringField('Дата отправления')
+    receive_date = StringField('Дата получения')
+
     submit = SubmitField('Сохранить')
