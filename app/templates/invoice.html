@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Редактирование формы {{ invoice.name }}</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=32) }}<br>
+            {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+        <button id="get_word" data-id="{{ invoice.id }}"> Экспорт документа в WORD</button>
+    </form>
+    <script>
+    $(function () {
+        $("#get_word").on("click", function(e) {
+            e.preventDefault();
+            id_invoice = $(this).data('id');
+            short = $('input[name=send_text]').is(':checked');
+            full = $('input[name=send_full_text]').is(':checked');
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                var a, today;
+                if (xhttp.readyState === 4 && xhttp.status === 200) {
+                    a = document.createElement('a');
+                    a.href = window.URL.createObjectURL(xhttp.response);
+                    today = new Date();
+                    a.download = "invoice_" + id_invoice + today.toDateString().split(" ").join("_") + ".docx";
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    return a.click();
+                }
+            };
+            xhttp.open("GET", "/get_invoice_word?id=" + id_invoice + '&short=' + short + '&full=' + full, true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.responseType = 'blob';
+            xhttp.send();
+        });
+      })
+    </script>
+{% endblock %}

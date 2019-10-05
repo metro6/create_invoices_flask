@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+      {% if title %}
+      <title>{{ title }} - Формы</title>
+      {% else %}
+        <title>Формы</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>
+            Формы:
+            <a href="{{ url_for('index') }}">Список форм</a>
+            {% if current_user.is_anonymous %}
+                <a href="{{ url_for('login') }}">Войти</a>
+            {% else %}
+                <a href="{{ url_for('logout') }}">Выйти</a>
+            {% endif %}
+            <a href="{{ url_for('create_form') }}">Создание новой формы</a>
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>
